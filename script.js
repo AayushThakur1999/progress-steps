@@ -7,14 +7,11 @@ let currentActive = 1;
 next.addEventListener('click', (event) => {
     currentActive++;
     updateClass(event);
-    progressBar.style.width = (currentActive - 1) / (circles.length - 1) * 100 + "%";
-    
 });
 
 prev.addEventListener('click', (event) => {
     currentActive--;
     updateClass(event);
-    progressBar.style.width = 100 - (circles.length - currentActive) / (circles.length - 1) * 100 + "%";
 });
 
 function updateClass(event) {
@@ -25,6 +22,8 @@ function updateClass(event) {
             circle.classList.remove('active');
     });
     
+    progressBar.style.width = (currentActive - 1) / (circles.length - 1) * 100 + "%";
+
     if (currentActive == 1)
         prev.disabled = true;
     else if (currentActive === circles.length)
