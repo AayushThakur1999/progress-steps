@@ -4,32 +4,33 @@ const circles = document.querySelectorAll('.circle');
 const progressBar = document.querySelector('.progress');
 let currentActive = 1;
 
-next.addEventListener('click', () => {
-    for (const circle of circles) {
-        if (!circle.classList.contains('active')) {
-            circle.classList.add('active');
-            currentActive++;
-            prev.removeAttribute('disabled');
-            break;
-        }
-    }
+next.addEventListener('click', (event) => {
+    currentActive++;
+    updateClass(event);
     progressBar.style.width = (currentActive - 1) / (circles.length - 1) * 100 + "%";
-    if(currentActive == circles.length){
-        next.setAttribute('disabled', true);
-    }
+    
 });
 
-prev.addEventListener('click', () => {
-    for(let i = circles.length - 1; i > 0; i--) {
-        if (circles[i].classList.contains('active')) {
-            circles[i].classList.remove('active');
-            currentActive--;
-            next.removeAttribute('disabled');
-            break;
-        } 
-    }
+prev.addEventListener('click', (event) => {
+    currentActive--;
+    updateClass(event);
     progressBar.style.width = 100 - (circles.length - currentActive) / (circles.length - 1) * 100 + "%";
-    if(currentActive == 1) {
-        prev.setAttribute('disabled', true);
-    }
 });
+
+function updateClass(event) {
+    circles.forEach((circle, idx) => {
+        if(idx < currentActive  && event.target.id == "next") 
+            circle.classList.add('active');
+        if (idx >= currentActive  && event.target.id == "prev")
+            circle.classList.remove('active');
+    });
+    
+    if (currentActive == 1)
+        prev.disabled = true;
+    else if (currentActive === circles.length)
+        next.disabled = true;
+    else {
+        next.disabled = false;
+        prev.disabled = false;
+    }
+}
